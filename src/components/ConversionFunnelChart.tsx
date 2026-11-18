@@ -21,17 +21,17 @@ export const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({
   const [s1, s2, s3, s4] = stages;
 
   return (
-    <div className="lg:col-span-5 xl:col-span-4 bg-white card-rounded p-5 shadow-soft border border-slate-100 flex flex-col justify-between">
+    <div className="w-full h-full bg-white dark:bg-slate-800 card-rounded p-4 shadow-soft border border-slate-100 dark:border-slate-700/60 flex flex-col justify-between overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between pb-2">
         <div>
-          <h2 className="text-base font-bold text-slate-900">{title}</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{title}</h2>
           <p className="text-xs text-slate-400 mt-0.5">{sub}</p>
         </div>
         <div className="text-right">
           <span className="text-[11px] text-slate-400 font-medium">Conversion rate</span>
           <div className="flex items-center justify-end gap-1.5 mt-0.5">
-            <span className="text-xl font-extrabold text-slate-900">{conversionRate}</span>
+            <span className="text-xl font-extrabold text-slate-900 dark:text-white">{conversionRate}</span>
             <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emeraldPill text-emeraldText">
               {conversionBadge}
             </span>
@@ -40,8 +40,8 @@ export const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({
       </div>
 
       {/* Vertical Bars Funnel with intermediate comb pillars */}
-      <div className="w-full flex-1 flex flex-col justify-end pt-4 pb-1">
-        <div className="h-44 w-full flex items-end justify-between px-1 gap-1">
+      <div className="w-full flex-1 min-h-[140px] flex flex-col justify-end pt-2 pb-1">
+        <div className="h-full w-full flex items-end justify-between px-1 gap-1">
           {/* Stage 1 */}
           <div className="flex flex-col items-center w-11 group">
             <span className="text-[11px] font-bold text-slate-800 mb-1.5">
@@ -52,16 +52,16 @@ export const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({
 
           {/* Comb lines between 1 & 2 */}
           <div className="flex items-end gap-1 flex-1 justify-around px-0.5 opacity-60">
-            <div className="w-1.5 h-32 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-28 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-25 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-23 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-21 bg-slate-200 rounded-full"></div>
+            <div className="w-1.5 h-32 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-28 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-25 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-23 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-21 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
           </div>
 
           {/* Stage 2 */}
           <div className="flex flex-col items-center w-14 group">
-            <span className="text-[11px] font-bold text-slate-800 mb-1.5">
+            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
               {s2?.percentage || 53}%
             </span>
             <div className="w-2.5 h-20 bg-emerald-500 rounded-full group-hover:scale-105 smooth-transition shadow-sm"></div>
@@ -69,15 +69,15 @@ export const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({
 
           {/* Comb lines between 2 & 3 */}
           <div className="flex items-end gap-1 flex-1 justify-around px-0.5 opacity-60">
-            <div className="w-1.5 h-16 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-13 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-10 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-8 bg-slate-200 rounded-full"></div>
+            <div className="w-1.5 h-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-13 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-10 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-8 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
           </div>
 
           {/* Stage 3 */}
           <div className="flex flex-col items-center w-12 group">
-            <span className="text-[11px] font-bold text-slate-800 mb-1.5">
+            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200 mb-1.5">
               {s3?.percentage || 13}%
             </span>
             <div className="w-2.5 h-7 bg-emerald-500 rounded-full group-hover:scale-105 smooth-transition shadow-sm"></div>
@@ -85,8 +85,8 @@ export const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({
 
           {/* Comb lines between 3 & 4 */}
           <div className="flex items-end gap-1 flex-1 justify-around px-0.5 opacity-60">
-            <div className="w-1.5 h-6 bg-slate-200 rounded-full"></div>
-            <div className="w-1.5 h-5 bg-slate-200 rounded-full"></div>
+            <div className="w-1.5 h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+            <div className="w-1.5 h-5 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
           </div>
 
           {/* Stage 4 */}

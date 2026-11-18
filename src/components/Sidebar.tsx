@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { SystemTabKey, UserRole, SiteKey, SiteOption } from '../types/dashboard';
+import React, { useState, useRef, useEffect } from 'react';
+import { SystemTabKey, UserRole, SiteKey, SiteOption, UserAccount } from '../types/dashboard';
 
 interface SidebarProps {
   currentTab: SystemTabKey;
@@ -9,10 +9,13 @@ interface SidebarProps {
   role: UserRole;
   onSelectTab: (tab: SystemTabKey) => void;
   onSelectSite: (site: SiteKey) => void;
-  onOpenAI: () => void;
+  onOpenAI?: () => void;
   onBack: () => void;
   allowedSystems?: SystemTabKey[];
   allowedSites?: SiteKey[];
+  currentUser?: UserAccount;
+  users?: UserAccount[];
+  onSelectUser?: (userId: string) => void;
 }
 
 export const SITES: SiteOption[] = [
@@ -100,9 +103,9 @@ const SYSTEM_ITEMS: NavItem[] = [
     sub: 'Human Resources',
     icon: (
       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="9" cy="7" r="3" />
-        <path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-        <path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87" />
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
       </svg>
     ),
   },
@@ -112,8 +115,8 @@ const SYSTEM_ITEMS: NavItem[] = [
     sub: 'Customer Relations',
     icon: (
       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-        <path d="M8 10h.01M12 10h.01M16 10h.01" />
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
       </svg>
     ),
   },
@@ -133,23 +136,52 @@ const SYSTEM_ITEMS: NavItem[] = [
 export const Sidebar: React.FC<SidebarProps> = ({
   currentTab,
   currentSite,
+  role,
   onSelectTab,
   onSelectSite,
-  onOpenAI,
   onBack,
   allowedSystems,
   allowedSites,
+  currentUser,
+  users = [],
+  onSelectUser,
 }) => {
   const [siteOpen, setSiteOpen] = useState(false);
-  const activeSite = SITES.find((s) => s.key === currentSite) ?? SITES[0];
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const visibleOverview = OVERVIEW_ITEMS;
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Filter Overview and Systems strictly by allowedSystems
+  const visibleOverview = allowedSystems
+    ? OVERVIEW_ITEMS.filter((i) => allowedSystems.includes(i.tab))
+    : OVERVIEW_ITEMS;
+
   const visibleSystems = allowedSystems
     ? SYSTEM_ITEMS.filter((i) => allowedSystems.includes(i.tab))
     : SYSTEM_ITEMS;
+
+  // Filter Sites strictly by allowedSites
   const visibleSites = allowedSites
     ? SITES.filter((s) => allowedSites.includes(s.key))
     : SITES;
+
+  const activeSite = visibleSites.find((s) => s.key === currentSite) ?? visibleSites[0] ?? SITES[0];
+
+  const getInitials = (name?: string) => {
+    if (!name) return 'U';
+    const parts = name.split(' ');
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return name.slice(0, 2).toUpperCase();
+  };
 
   const renderItem = (item: NavItem) => {
     const active = currentTab === item.tab;
@@ -159,15 +191,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         onClick={() => onSelectTab(item.tab)}
         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl smooth-transition group ${
           active
-            ? 'bg-slate-900 text-white shadow-md'
-            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium'
+            ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-md'
+            : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 font-medium'
         }`}
       >
-        <span className={`shrink-0 ${active ? 'text-white' : 'text-slate-400 group-hover:text-slate-700'}`}>
+        <span className={`shrink-0 ${active ? 'text-white' : 'text-slate-400 group-hover:text-slate-700 dark:group-hover:text-white'}`}>
           {item.icon}
         </span>
         <div className="text-left min-w-0">
-          <p className={`text-[13px] font-semibold leading-none ${active ? 'text-white' : 'text-slate-800'}`}>
+          <p className={`text-[13px] font-semibold leading-none ${active ? 'text-white' : 'text-slate-800 dark:text-slate-200'}`}>
             {item.label}
           </p>
           <p className={`text-[10px] mt-0.5 ${active ? 'text-slate-300' : 'text-slate-400'}`}>
@@ -179,26 +211,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <aside className="w-64 shrink-0 bg-white card-rounded flex flex-col justify-between shadow-soft border border-slate-100/80 transition-all duration-300 overflow-hidden">
-      <div className="p-4">
+    <aside className="w-64 h-full shrink-0 bg-white dark:bg-slate-900 card-rounded flex flex-col justify-between shadow-soft border border-slate-100/80 dark:border-slate-800 transition-all duration-300 overflow-hidden">
+      <div className="p-4 flex-1 flex flex-col min-h-0">
         {/* Brand */}
-        <div className="flex items-center gap-2.5 pb-4 pt-1 px-1">
-          <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center text-white shadow-sm">
+        <div className="flex items-center gap-2.5 pb-3 pt-0.5 px-1 shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-black dark:bg-slate-800 flex items-center justify-center text-white shadow-sm">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 3h14M5 9h14M5 15h14M5 21h14M3 3v18M21 3v18" />
             </svg>
           </div>
           <div>
-            <span className="font-semibold text-base tracking-tight text-slate-900">Nexus</span>
+            <span className="font-semibold text-base tracking-tight text-slate-900 dark:text-white">Nexus</span>
             <p className="text-[10px] text-slate-400 font-medium -mt-0.5">Dashboard Framework</p>
           </div>
         </div>
 
         {/* Site Selector Dropdown */}
-        <div className="relative mb-5">
+        <div className="relative mb-3 shrink-0">
           <button
             onClick={() => setSiteOpen((v) => !v)}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl smooth-transition"
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-xl smooth-transition"
           >
             <div className="flex items-center gap-2 min-w-0">
               <svg className="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -206,8 +238,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <div className="text-left min-w-0">
-                <p className="text-[10px] text-slate-400 font-medium">บจก. ฤทธา</p>
-                <p className="text-[13px] font-bold text-slate-800 leading-tight truncate">{activeSite.label}</p>
+                <p className="text-[10px] text-slate-400 font-medium">{currentUser?.org || 'บจก. ฤทธา'}</p>
+                <p className="text-[12.5px] font-bold text-slate-800 dark:text-slate-200 leading-tight truncate">{activeSite.label}</p>
               </div>
             </div>
             <svg
@@ -219,13 +251,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
 
           {siteOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-100 rounded-xl shadow-xl z-50 py-1.5 overflow-hidden">
+            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl shadow-xl z-50 py-1.5 overflow-hidden">
               {visibleSites.map((site) => (
                 <button
                   key={site.key}
                   onClick={() => { onSelectSite(site.key); setSiteOpen(false); }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2 text-[13px] hover:bg-slate-50 smooth-transition ${
-                    currentSite === site.key ? 'text-slate-900 font-semibold' : 'text-slate-600'
+                  className={`w-full flex items-center justify-between px-3.5 py-2 text-[13px] hover:bg-slate-50 dark:hover:bg-slate-700 smooth-transition ${
+                    currentSite === site.key ? 'text-slate-900 dark:text-white font-semibold bg-emerald-50/50 dark:bg-emerald-950/30' : 'text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   <span>{site.label}</span>
@@ -241,48 +273,149 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Navigation */}
-        <nav className="space-y-4 text-[13.5px]">
-          {/* Overview */}
-          <div>
-            <p className="px-3 text-[10px] font-bold text-slate-400 mb-1.5 tracking-widest uppercase">ภาพรวม</p>
-            <div className="space-y-0.5">
-              {visibleOverview.map(renderItem)}
+        <nav className="space-y-3 text-[13px] flex-1 overflow-y-auto pr-1">
+          {/* Overview Section */}
+          {visibleOverview.length > 0 && (
+            <div>
+              <p className="px-3 text-[10px] font-bold text-slate-400 mb-1.5 tracking-widest uppercase">ภาพรวม</p>
+              <div className="space-y-0.5">
+                {visibleOverview.map(renderItem)}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* All Systems */}
+          {/* All Systems Section */}
           <div>
-            <p className="px-3 text-[10px] font-bold text-slate-400 mb-1.5 tracking-widest uppercase">ระบบทั้งหมด</p>
-            <div className="space-y-0.5">
-              {visibleSystems.map(renderItem)}
+            <div className="px-3 flex items-center justify-between mb-1.5">
+              <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">ระบบทั้งหมด</p>
+              <span className="text-[10px] text-slate-400 font-medium">
+                {visibleSystems.length} ระบบ
+              </span>
             </div>
+            {visibleSystems.length > 0 ? (
+              <div className="space-y-0.5">
+                {visibleSystems.map(renderItem)}
+              </div>
+            ) : (
+              <div className="px-3 py-3 text-center text-xs text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                ไม่มีระบบที่ได้รับอนุญาต
+              </div>
+            )}
           </div>
         </nav>
       </div>
 
-      {/* Bottom */}
-      <div className="p-4 border-t border-slate-100 space-y-1">
-        <button
-          onClick={onOpenAI}
-          className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 smooth-transition"
-        >
-          <div className="flex items-center gap-2">
-            <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span className="font-semibold text-[13px]">AI Assistant</span>
-          </div>
-          <span className="text-[10px] font-bold bg-emerald-500 text-white px-1.5 py-0.5 rounded">Prompt</span>
-        </button>
+      {/* Bottom Area: Active User Profile & Switcher */}
+      <div className="p-3.5 border-t border-slate-100 dark:border-slate-800 space-y-2 relative" ref={userMenuRef}>
+        {/* User Card with Switcher Dropdown */}
+        <div className="relative">
+          <div
+            onClick={() => setUserMenuOpen((v) => !v)}
+            className="w-full flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200/70 dark:border-slate-700 smooth-transition cursor-pointer select-none group"
+            title="คลิกเพื่อสลับดูผู้ใช้งานคนอื่น หรือดูรายละเอียดสิทธิ์"
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              {/* Avatar with Online Dot */}
+              <div className="relative shrink-0">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                  {getInitials(currentUser?.name)}
+                </div>
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
+              </div>
 
+              {/* User Details */}
+              <div className="text-left min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                    {currentUser?.name || 'Worapol Sittigrilard'}
+                  </p>
+                  <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 capitalize shrink-0">
+                    {role}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400 truncate">
+                  {currentUser?.email || 'worapol@rittha.co.th'}
+                </p>
+              </div>
+            </div>
+
+            {/* Switch icon */}
+            <svg
+              className={`w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 shrink-0 smooth-transition ${
+                userMenuOpen ? 'rotate-180 text-blue-600' : ''
+              }`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+            </svg>
+          </div>
+
+          {/* User Switcher Popup Menu */}
+          {userMenuOpen && users.length > 0 && (
+            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-2 z-50 text-slate-700 dark:text-slate-200 max-h-72 overflow-y-auto">
+              <div className="px-2.5 py-1.5 mb-1 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  สลับผู้ใช้งาน (User Switcher)
+                </span>
+                <span className="text-[10px] text-slate-400">{users.length} บัญชี</span>
+              </div>
+
+              <div className="space-y-1">
+                {users.map((u) => {
+                  const isCurrent = currentUser?.id === u.id;
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => {
+                        onSelectUser?.(u.id);
+                        setUserMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between p-2 rounded-xl text-left smooth-transition ${
+                        isCurrent
+                          ? 'bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center font-bold text-[10px] shrink-0">
+                          {getInitials(u.name)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className={`text-xs font-semibold leading-tight truncate ${isCurrent ? 'text-blue-700 dark:text-blue-300' : 'text-slate-800 dark:text-slate-200'}`}>
+                            {u.name}
+                          </p>
+                          <p className="text-[10px] text-slate-400 truncate">
+                            {u.allowedSystems.length} ระบบ • {u.allowedSites.length} ไซต์
+                          </p>
+                        </div>
+                      </div>
+                      {isCurrent && (
+                        <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded shadow-xs shrink-0">
+                          เข้าใช้อยู่
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sign out Button */}
         <button
+          type="button"
           onClick={onBack}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 smooth-transition text-[13px] font-medium"
+          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 smooth-transition text-xs font-medium"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          <span>Sign out</span>
+          <span>ออกจากระบบ / สลับบทบาท</span>
         </button>
       </div>
     </aside>

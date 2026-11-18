@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen p-3 md:p-5 flex justify-center items-start text-slate-800">
+      <body className="h-screen w-screen overflow-hidden p-2 md:p-3 flex justify-center items-center text-slate-800 dark:text-slate-100 bg-[#f0f2f5] dark:bg-[#0b1120]">
         {children}
       </body>
     </html>

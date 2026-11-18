@@ -24,8 +24,8 @@ export const TrafficSourcesCard: React.FC<TrafficSourcesCardProps> = ({
   const col2 = sources.slice(Math.ceil(sources.length / 2));
 
   return (
-    <div className="lg:col-span-5 bg-white card-rounded p-5 shadow-soft border border-slate-100 flex flex-col justify-between">
-      <h2 className="text-sm font-bold text-slate-900">{title}</h2>
+    <div className="w-full h-full bg-white dark:bg-slate-800 card-rounded p-4 shadow-soft border border-slate-100 dark:border-slate-700/60 flex flex-col justify-between overflow-hidden">
+      <h2 className="text-sm font-bold text-slate-900 dark:text-white">{title}</h2>
 
       {/* Top 4 Stats */}
       <div className="grid grid-cols-4 gap-2 pt-1 pb-3 text-left">

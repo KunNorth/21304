@@ -81,7 +81,7 @@ c:\Users\User\Documents\PassF/
 
 | แท็บ | วัตถุประสงค์ | ข้อมูล KPI เด่นในระบบ |
 |---|---|---|
-| **ภาพรวม (overview)** | General Metrics ตามแบบฉบับ Retail / E-commerce | Profit Margin €123,927.85, Orders 2,792, Units Sold 1,571 |
+| **ภาพรวม (overview)** | General Metrics ตามแบบฉบับ Retail / E-commerce | Profit Margin ฿123,927.85, Avg. Order Value ฿857, Orders 2,792, Units Sold 1,571 |
 | **War Room (warroom)** | รวมศูนย์ข้อมูล 7 ไซต์งานของ บจก. ฤทธา | 10/10 ระบบพร้อมใช้, กำลังพล 3,842 คน, 0 Incident Alerts |
 | **ระบบการเงิน (finance)** | รายรับ-รายจ่าย งบประมาณเบิกจ่ายโครงการ | รายได้สุทธิ ฿18.45M, เบิกจ่าย ฿12.19M, สภาพคล่อง ฿6.25M |
 | **ระบบลงเวลา (attendance)** | สแกนใบหน้า เข้างานตรงเวลา ขาด ลา มาสาย | เข้างานตรงเวลา 95.8%, สแกนใบหน้าสำเร็จ 642 คน, มาสาย 18 คน |

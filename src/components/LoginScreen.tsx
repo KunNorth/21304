@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { UserRole } from '../types/dashboard';
+import { ThemeToggle } from './ThemeToggle';
 
 interface LoginScreenProps {
   onSelectRole: (role: UserRole) => void;
@@ -71,8 +72,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onSelectRole }) => {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center px-8 py-10">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex flex-col justify-between px-8 py-10 relative">
+        <div className="absolute top-6 right-6">
+          <ThemeToggle />
+        </div>
+        <div className="w-full max-w-sm mx-auto my-auto">
 
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">

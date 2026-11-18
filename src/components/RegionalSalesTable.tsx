@@ -13,8 +13,8 @@ export const RegionalSalesTable: React.FC<RegionalSalesTableProps> = ({
   rows,
 }) => {
   return (
-    <div className="lg:col-span-4 bg-white card-rounded p-5 shadow-soft border border-slate-100 flex flex-col justify-between">
-      <h2 className="text-sm font-bold text-slate-900">{title}</h2>
+    <div className="w-full h-full bg-white dark:bg-slate-800 card-rounded p-4 shadow-soft border border-slate-100 dark:border-slate-700/60 flex flex-col justify-between overflow-hidden">
+      <h2 className="text-sm font-bold text-slate-900 dark:text-white">{title}</h2>
 
       <div className="w-full mt-2">
         <table className="w-full text-left text-[12px]">

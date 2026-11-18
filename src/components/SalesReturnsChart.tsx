@@ -48,11 +48,11 @@ export const SalesReturnsChart: React.FC<SalesReturnsChartProps> = ({
   const percentY = (currentPoint.y / 200) * 100;
 
   return (
-    <div className="lg:col-span-7 xl:col-span-8 bg-white card-rounded p-5 shadow-soft border border-slate-100 flex flex-col justify-between">
+    <div className="w-full h-full bg-white dark:bg-slate-800 card-rounded p-4 shadow-soft border border-slate-100 dark:border-slate-700/60 flex flex-col justify-between overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-2">
         <div>
-          <h2 className="text-base font-bold text-slate-900">{title}</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{title}</h2>
           <p className="text-xs text-slate-400 mt-0.5">{sub}</p>
         </div>
         {/* Header Stats */}
@@ -63,7 +63,7 @@ export const SalesReturnsChart: React.FC<SalesReturnsChartProps> = ({
               <span>{legend1}</span>
             </div>
             <div className="flex items-center justify-end gap-1.5 mt-0.5">
-              <span className="text-xl font-extrabold text-slate-900">{legendVal1}</span>
+              <span className="text-xl font-extrabold text-slate-900 dark:text-white">{legendVal1}</span>
               <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emeraldPill text-emeraldText">
                 {legendBadge1}
               </span>
@@ -76,7 +76,7 @@ export const SalesReturnsChart: React.FC<SalesReturnsChartProps> = ({
               <span>{legend2}</span>
             </div>
             <div className="flex items-center justify-end gap-1.5 mt-0.5">
-              <span className="text-xl font-extrabold text-slate-900">{legendVal2}</span>
+              <span className="text-xl font-extrabold text-slate-900 dark:text-white">{legendVal2}</span>
               <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-rosePill text-roseText">
                 {legendBadge2}
               </span>
@@ -86,7 +86,7 @@ export const SalesReturnsChart: React.FC<SalesReturnsChartProps> = ({
       </div>
 
       {/* Interactive SVG Chart Canvas */}
-      <div className="relative w-full h-64 mt-3 select-none">
+      <div className="relative w-full flex-1 min-h-[140px] mt-2 select-none">
         {/* Y-Axis Labels & Dashed Lines */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none text-[11px] text-slate-400 font-medium pr-2">
           <div className="flex items-center w-full">

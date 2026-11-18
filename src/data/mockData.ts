@@ -11,7 +11,7 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
       {
         id: 'kpi-1',
         label: 'Profit Margin',
-        value: '€123,927.85',
+        value: '฿123,927.85',
         badge: '+38%',
         arrow: '↑',
         sub: 'Up 38% this week',
@@ -29,7 +29,7 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
       {
         id: 'kpi-3',
         label: 'Avg. Order Value',
-        value: '857',
+        value: '฿857',
         badge: '-67%',
         arrow: '↓',
         sub: 'Down 67% this week',
@@ -98,8 +98,8 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
     },
     traffic: {
       title: 'Traffic Sources',
-      spend: '€11,598',
-      cpa: '€5.4',
+      spend: '฿11,598',
+      cpa: '฿5.4',
       impressions: '7,574,183',
       clicks: '60,784',
       sources: [
@@ -114,10 +114,10 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
     regions: {
       title: 'Sales by Region',
       rows: [
-        { region: 'Spain', orders: 129, trend: '↓', isUp: false, revenue: '€24,063.90' },
-        { region: 'Rest of the world', orders: 7, trend: '↑', isUp: true, revenue: '€3,576.18' },
-        { region: 'Europa', orders: 129, trend: '↑', isUp: true, revenue: '€24,063.90' },
-        { region: 'Mexico', orders: 1, trend: '↓', isUp: false, revenue: '€41.08' }
+        { region: 'Spain', orders: 129, trend: '↓', isUp: false, revenue: '฿24,063.90' },
+        { region: 'Rest of the world', orders: 7, trend: '↑', isUp: true, revenue: '฿3,576.18' },
+        { region: 'Europa', orders: 129, trend: '↑', isUp: true, revenue: '฿24,063.90' },
+        { region: 'Mexico', orders: 1, trend: '↓', isUp: false, revenue: '฿41.08' }
       ]
     }
   },
@@ -126,7 +126,7 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
   warroom: {
     key: 'warroom',
     brand: 'บจก. ฤทธา - ห้อง War Room',
-    title: 'War Room (มอนิเตอร์ภาพรวม 7 ไซต์งาน)',
+    title: 'War Room (มอนิเตอร์ภาพรวม 4 ไซต์งาน)',
     subtitle: 'ศูนย์ควบคุมและเชื่อมต่อ 10 ระบบหลัก: VMS, ลงเวลา, การเงิน, HR, ERP แบบ Real-time',
     kpis: [
       {

@@ -30,8 +30,8 @@ export const SessionsGauge: React.FC<SessionsGaugeProps> = ({
   const greenArcPath = `M 20 100 A 80 80 0 0 1 ${endX.toFixed(1)} ${endY.toFixed(1)}`;
 
   return (
-    <div className="lg:col-span-3 bg-white card-rounded p-5 shadow-soft border border-slate-100 flex flex-col justify-between">
-      <h2 className="text-sm font-bold text-slate-900">{title}</h2>
+    <div className="w-full h-full bg-white dark:bg-slate-800 card-rounded p-4 shadow-soft border border-slate-100 dark:border-slate-700/60 flex flex-col justify-between overflow-hidden">
+      <h2 className="text-sm font-bold text-slate-900 dark:text-white">{title}</h2>
 
       {/* Radial Gauge Graphic */}
       <div className="relative flex flex-col items-center justify-center my-auto py-3">
@@ -40,7 +40,7 @@ export const SessionsGauge: React.FC<SessionsGaugeProps> = ({
           <path
             d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
-            stroke="#eef2f6"
+            className="stroke-[#eef2f6] dark:stroke-slate-700/80"
             strokeWidth="15"
             strokeLinecap="round"
           />

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { ThemeToggle } from './ThemeToggle';
 
 type DevSection = 'systems' | 'connect' | 'dataset' | 'test';
 
@@ -115,11 +116,14 @@ export const DeveloperPanel: React.FC<DeveloperPanelProps> = ({ onBack }) => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col gap-4 min-w-0">
-        <div className="pt-1">
-          <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
-            {NAV_ITEMS.find((n) => n.key === section)?.label}
-          </h1>
-          <p className="text-xs text-slate-400 mt-0.5 font-medium">Developer &bull; The Nexus Dashboard Framework</p>
+        <div className="flex items-center justify-between pt-1">
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
+              {NAV_ITEMS.find((n) => n.key === section)?.label}
+            </h1>
+            <p className="text-xs text-slate-400 mt-0.5 font-medium">Developer &bull; The Nexus Dashboard Framework</p>
+          </div>
+          <ThemeToggle />
         </div>
 
         {/* Connected Systems */}

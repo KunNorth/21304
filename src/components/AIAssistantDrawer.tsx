@@ -61,7 +61,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
 
   return (
     <div
-      className={`fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-slate-100 p-6 flex flex-col justify-between transform transition-transform duration-300 z-50 ${
+      className={`fixed inset-y-0 right-0 w-96 bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-100 dark:border-slate-800 p-6 flex flex-col justify-between transform transition-transform duration-300 z-50 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
@@ -158,7 +158,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             value={inputPrompt}
             onChange={(e) => setInputPrompt(e.target.value)}
             placeholder="พิมพ์คำสั่งปรับแต่ง Dashboard..."
-            className="flex-1 text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
+            className="flex-1 text-xs px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100"
           />
           <button
             type="submit"
